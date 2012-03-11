@@ -130,8 +130,9 @@ do
 			    echo "$k MATCHES $SUBMITTED_FILE, student/id: $i" >> $PRESENT/$RESULT
 			    #echo "$SUBMITTED_FILE from $i compared with $k in $j"
 			else 
-			    echo "$k differs $SUBMITTED_FILE, student/id: $i" >> $PRESENT/$RESULT
-			    #echo "$SUBMITTED_FILE from $i compared with $k in $j"
+			    echo ""  > /dev/null
+# 			    echo "$k differs $SUBMITTED_FILE, student/id: $i" >> $PRESENT/$RESULT
+# 			    echo "$SUBMITTED_FILE from $i compared with $k in $j"
 			fi 
 
 		    done
