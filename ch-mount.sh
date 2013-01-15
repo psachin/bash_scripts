@@ -21,10 +21,10 @@ function umnt() {
 }
 
 
-if [ $1 == '-m' ] && [ -n "$2" ];
+if [ "$1" == "-m" ] && [ -n "$2" ] ;
 then
     mnt $1 $2
-elif [ $1 == '-u' ] && [ -n "$2" ];
+elif [ "$1" == "-u" ] && [ -n "$2" ];
 then
     umnt $1 $2
 else
