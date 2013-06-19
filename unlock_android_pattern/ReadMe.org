@@ -1,16 +1,27 @@
+#+POSTID: 2302
+#+DATE: [2013-06-19 Wed 10:22]
+#+OPTIONS: toc:nil num:nil todo:nil pri:nil tags:nil ^:nil TeX:nil
+#+CATEGORY: android
+#+TAGS:android, pattern unlock
+#+DESCRIPTION: How to bypass pattern lock on Android if you have made `too many attempts`
+#+TITLE: Hack android pattern lock
+
 * How to bypass pattern lock on Android if you have made `too many attempts`
 
-/Note/: This is ONLY tested on Aakash but other may find these scripts
-and reference useful
+/Note/: This is tested on Aakash(AllWinner A13) but you may find the
+scripts and reference useful
 
-/Problem/: The attempt to unlock pattern was exceeded, so with no
-Internet connection and adb access how to delete the database entries
+/Situation/: The attempt to unlock pattern was exceeded, so with no
+Internet connection and no =adb= access how to delete the database
+entries
+
+#+HTML: <!--more-->
 
 /Solution/:
 
 ** Downloading and burning an image on SD-card
-   + Buy one 8 GB SD-card and download GNU/linux image for Aakash from
-     [[http://www.it.iitb.ac.in/AakashApps/repo/GNU-Linux-on-Aakash/12.10-lxde-bootLogo-0secUboot-expeyes-scilab-on-cloud-sleep1.img.bz2][here]]. 
+   + Buy one 8 GB SD-card and download GNU/Linux image for Aakash from
+     [[http://www.it.iitb.ac.in/AakashApps/repo/GNU-Linux-on-Aakash/12.10-lxde-bootLogo-0secUboot-expeyes-scilab-on-cloud-sleep1.img.bz2][here]].
 
    + Extract that image using the command
      #+BEGIN_SRC bash
@@ -20,78 +31,73 @@ Internet connection and adb access how to delete the database entries
    + You need to burn that extracted image to SD-card. Insert the
      SD-card in to the SD-card slot slot of your laptop/PC and run
      this command.
-
      #+BEGIN_SRC bash
      sudo dd if=12.10-lxde_with_scilab_on_cloud_cleaned.img of=/dev/sdb bs=1024
      #+END_SRC
 
      assuming your SD-card was detected as =/dev/sdb=
+     
+   + Or you can use a simplified GUI [[https://github.com/androportal/ddMaker][ddMaker]] tool for burning an
+     image.
 
-** Booting with GNU/linux image
-   + Insert the SD-card in to the SD-card slot of the tablet and power
-     and hold the /power/ button until you see Aakash's bootsplash
-     screen.
+** Booting with GNU/Linux image
+   + Insert the SD-card in to the SD-card slot of the tablet and hold
+     the /power/ button until you see Aakash's boot-splash screen.
      
 ** Installing required dependencies
-   + You need to edit the settings.db file. This is sqlite's
-     database. You may need to install =sqlite3= on the
-     tablet(GNU/linux side). You can install it using =apt-get=. The
-     command is 
-
+   + You need to edit the =settings.db= file. This is sqlite's
+     database file. You may need to install =sqlite3= on the
+     tablet(GNU/Linux side). You can install it using =apt-get=. On
+     the terminal type
      #+BEGIN_SRC bash
      sudo apt-get install sqlite3
      #+END_SRC
+     give the password as =123=
 
-     If you decide to use the automated scripts from this directory,
-     you may also need to install =python-pysqlite2= which python
-     interface library for =sqlite3=. The command is
 
-     #+BEGIN_SRC bash
-     sudo apt-get install python-pysqlite2
-     #+END_SRC
-     
 ** Mounting the NAND partition
 
    + login as =root= 
-
      #+BEGIN_SRC bash
      sudo -s
      #+END_SRC
-
      give the password as =123=
 
-   + Now you need to mount =/dev/nande= partition in which the
-     =settings.db= file resides. 
+   + Now you need to mount =/dev/nande= partition in which
+     =settings.db= file resides.
 
-   + Make a temporary directory
-
+   + Make a temporary directory for mounting NAND partition
      #+BEGIN_SRC bash
      mkdir -p /root/nande
      #+END_SRC
-
      and mount the =nande= partition using the command
-
      #+BEGIN_SRC bash
      mount /dev/nande /root/nande
      #+END_SRC
 
 ** Update sqlite database
-   + now change the directory where the =settings.py file resides=
-
+   + Now change the directory in which =settings.db= file resides
      #+BEGIN_SRC bash
      cd nande/data/com.android.providers.settings/databases
      #+END_SRC
-
-     and use the database
-
+     
+     /Make copy of 'settings.db' in case you mess up with the content
+     of a file/ 
+     #+BEGIN_SRC bash
+     cp -v settings.db settings.db-original
+     #+END_SRC
+     
+     and use the database file
      #+BEGIN_SRC bash
      sqlite3 settings.db
      #+END_SRC
 
-     /Make copy of original file just in case/
+     You will get an sqlite3 prompt saying
+     #+BEGIN_SRC bash
+     sqlite
+     #+END_SRC
 
    + Now update the database
-
      #+BEGIN_SRC bash
      update secure set value=0 where name='lock_pattern_autolock';
      #+END_SRC
@@ -100,49 +106,51 @@ Internet connection and adb access how to delete the database entries
      update secure set value=0 where name='lockscreen.lockedoutpermanently';
      #+END_SRC
 
-     quit sqlite interface
-
+     quit sqlite3 interface
      #+BEGIN_SRC bash
      .quit
      #+END_SRC
      
    + Also remove the gesture key file
-
      #+BEGIN_SRC bash
      rm /data/system/gesture.key
      #+END_SRC
 
    + Unmount the NAND partition
-
      #+BEGIN_SRC bash
      cd /root
      umount /dev/nande
      #+END_SRC
 
    + poweroff the tablet
-
      #+BEGIN_SRC bash
      poweroff
      #+END_SRC
 
    + Remove the SDcard and boot into Android
 
-** Using scripts in this directory
+** Using automated scripts
 
-   + Instead of following the above procedure, you can download or
-     copy this directory to =/root= directory of the tablet(GNU/linux
-     side) and simply execute the script file =pattern_unlock.sh=
+   + If you decide to use the automated scripts from [[https://github.com/psachin/bash_scripts/tree/master/unlock_android_pattern][github]], you may
+     also need to install =python-pysqlite2=. This is python interface
+     library for =sqlite3=. The command to install is
+     #+BEGIN_SRC bash
+     sudo apt-get install python-pysqlite2
+     #+END_SRC
 
+   + Copy both the scripts to =/root= directory of the
+     tablet(GNU/Linux side) and execute the shell script
+     =pattern_unlock.sh=
      #+BEGIN_SRC bash
      cd unlock_android_pattern
      bash ./pattern_unlock.sh
      #+END_SRC
 
-   + and restart the tablet removing the SD-card
+   + Shutdown the tablet, remove the SD-card and restart it
+     again. Your pattern lock mush have disappeared by now.
 
 ** Additional commands(sqlite3)
    + View description of table
-     
      #+BEGIN_SRC bash
      pragma table_info([table_name])
      #+END_SRC
@@ -153,11 +161,11 @@ Internet connection and adb access how to delete the database entries
      #+END_SRC
 
    + list all the tables in the database
-
      #+BEGIN_SRC bash
      .tables
      #+END_SRC
 
+FOR EDUCATIONAL PURPOSE ONLY!. We do not hold any responsibility if you
+brick your phone/tablet.
 
 
-FOR EDUCATIONAL PURPOSE ONLY!
