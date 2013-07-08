@@ -6,7 +6,7 @@
 # update, to update project
 
 # vars
-PKG_NAME="com.mkyong.android"
+PKG_NAME="com.mkyong.chkbutton"
 APK_NAME="MainActivity-debug.apk"
 
 # remove /bin and gen/ if first argument passed is 'rm'
@@ -36,6 +36,8 @@ function update_project() {
 	rmbingen rm
         # this will update a repo for `ant` to build an apk
 	android update project --path . --target android-17 --subprojects
+	# at last, build apk
+	build_apk
     else
 	echo "not updating the project"
     fi
@@ -46,15 +48,19 @@ update_project $1
 # uninstall apk
 adb uninstall ${PKG_NAME}
 
-# build apk in debug mode
-echo "Building APK.."
-# if 'build.xml' does not exist, create it.
-if [ -f "build.xml" ];
-then
-    ant debug
-else
-    update_project update
-fi
+function build_apk() {
+    # build apk in debug mode
+    echo "Building APK.."
+    # if 'build.xml' does not exist, create it.
+    if [ -f "build.xml" ];
+    then
+	ant debug
+    else
+	update_project update
+    fi
+}
+# execute function build_apk
+build_apk
 
 if [ -f bin/${APK_NAME} ];
 then
