@@ -11,7 +11,7 @@
 
 
 # get list of all installed packages
-DPKG_INSTALL=$(dpkg --get-selections)
+DPKG_INSTALL=$(dpkg --get-selections | grep -w 'install' | awk '{print $1}')
 
 # generate list of all .deb files present in THIS directory
 OSCAD_DEP=$(ls -1 *.deb | cut -d '_' -f 1)
