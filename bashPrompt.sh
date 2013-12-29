@@ -36,3 +36,13 @@ function list_files() {
     fi
 }
 
+
+function which_user() {
+    # Change $ or # for normal and root user.
+    if [ $UID -eq 0 ];
+    then
+	echo "#"
+    else
+	echo "$"
+    fi
+}
