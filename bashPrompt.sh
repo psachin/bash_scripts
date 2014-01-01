@@ -2,7 +2,15 @@
 # ref: https://gist.github.com/31631
 
 function parse_git_dirty {
-    [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] && echo "*"
+    GIT_STATUS=$(git status 2> /dev/null | tail -n1)
+    CLEAN_STATUS_MESSAGE="nothing to commit, working directory clean"
+
+    if [[ ${GIT_STATUS} == ${CLEAN_STATUS_MESSAGE} ]];
+    then
+	echo " ✓ "
+    else
+	echo "*"
+    fi
 }
 
 function parse_git_branch {
