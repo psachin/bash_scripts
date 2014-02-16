@@ -29,10 +29,12 @@ then
     umnt $1 $2
 else
     echo ""
-    echo "Either 1'st, 2'nd or both parameters are missing"
+    echo "Either 1'st, 2'nd or both parameters were missing"
     echo ""
-    echo "first parameter can be one of these: -m OR -u"
-    echo "second parameter is the name of rootfs directory(with trailing '/')"
+    echo "1'st parameter can be one of these: -m(mount) OR -u(umount)"
+    echo "2'nd parameter is the full path of rootfs directory(with trailing '/')"
+    echo ""
+    echo "For example: ch-mount -m /media/sdcard/"
     echo ""
     echo 1st parameter : ${1}
     echo 2nd parameter : ${2}
