@@ -25,25 +25,35 @@
 # Path to your virtual environment directories
 VIRTUAL_DIR_PATH="/home/sachin/virtualenvs/"
 
+function setv_help() {
+    # Echo help
+    echo "Help: "
+    echo -e "setv [-l] \t\t\t to list all virtual envs."
+    echo -e "setv [virtual env name] \t to set virtual env."
+}
+
 function setv() {
-    if [ ${1} == "-l" ];
+    if [ $# -eq 0 ];
     then
-       echo "List of virtual environments you have under ${VIRTUAL_DIR_PATH}:"
-       echo " "
-       LIST_OF_VIRTUALENVS=$(ls -1 ${VIRTUAL_DIR_PATH})
-       for virt in ${LIST_OF_VIRTUALENVS}
-       do
-	   echo ${virt}
-       done
-       # Check if the virtual directory exists in PATH
-    elif [ -d ${VIRTUAL_DIR_PATH}${1} ];
-    then
-	# Activate the virtual environment
-	source ${VIRTUAL_DIR_PATH}${1}/bin/activate
+	setv_help
     else
-	# Else throw an error message
-	echo "Sorry, you don't have any virtual environment with that name"
-	echo "To list all virtual environments, type:"
-	echo "setv -l"
+	if [ ${1} == "-l" ];
+	then
+	    echo -e "List of virtual environments you have under ${VIRTUAL_DIR_PATH}:\n"
+	    LIST_OF_VIRTUALENVS=$(ls -1 ${VIRTUAL_DIR_PATH})
+	    for virt in ${LIST_OF_VIRTUALENVS}
+	    do
+		echo ${virt}
+	    done
+	    # Check if the virtual directory exists in PATH
+	elif [ -d ${VIRTUAL_DIR_PATH}${1} ];
+	then
+	    # Activate the virtual environment
+	    source ${VIRTUAL_DIR_PATH}${1}/bin/activate
+	else
+	    # Else throw an error message
+	    echo "Sorry, you don't have any virtual environment with that name"
+	    setv_help
+	fi
     fi
 }
