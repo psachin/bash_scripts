@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Replace with valid IP address and Port number
 export http_proxy="http://10.118.248.42:3128/"
 export https_proxy="http://10.118.248.42:3128/"
 export ftp_proxy="http://10.118.248.42:3128/"

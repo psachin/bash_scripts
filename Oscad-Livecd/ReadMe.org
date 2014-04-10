@@ -1,0 +1,50 @@
+* Oscad live CD/DVD script
+** Usage
+*** Set variables:
+     - =UBUNTU_ISO= is source ISO path. For example this can be ubuntu-12.04.2-desktop-i386.iso
+     - =TARGET_ISO= is the output filename. For example, ubuntu-OSCAD-rc5.iso
+
+     - For example:
+     #+BEGIN_SRC sh
+       export UBUNTU_ISO=${LIVE_PATH}/ubuntu-12.04.2-desktop-i386.iso
+       export TARGET_ISO=${LIVE_PATH}/ubuntu-OSCAD-rc5.iso
+     #+END_SRC sh
+
+*** Run 'expo.sh'
+    #+BEGIN_SRC sh
+      ./expo.sh
+    #+END_SRC sh
+
+    - This will remove any previous directories and mounts the ISO
+      image
+    - Finally it will drop you into a 'chroot' environment
+    - Make changes to environment and exit the shell
+
+*** Run 'assemble.sh'
+    #+BEGIN_SRC sh
+      ./assemble.sh
+    #+END_SRC sh
+
+    - This will create a squashfs of the 'chroot' environment and
+      finally make ans ISO image
+      
+** 'set_proxy.sh'
+   - Sets proxy and mounts necessary file-systems
+   
+** Tweaks
+*** Custom Unity icon
+    - Create a file '10_local-unity-launcher.gschema.override' under =/usr/share/glib-2.0/schemas/=
+    - The file content should be something like below
+      #+BEGIN_SRC sh
+        [com.canonical.Unity.Launcher]
+        favorites=['nautilus-home.desktop', 'firefox.desktop', 'ubuntu-software-center.desktop', 'otherapp1.desktop', 'otherapp2.desktop']
+      #+END_SRC sh
+    - Finally run
+      #+BEGIN_SRC sh
+        glib-compile-schemas /usr/share/glib-2.0/schemas/
+      #+END_SRC sh
+
+
+
+
+
