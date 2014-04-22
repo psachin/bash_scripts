@@ -26,7 +26,7 @@
     #+END_SRC sh
 
     - This will create a squashfs of the 'chroot' environment and
-      finally make ans ISO image
+      finally make an ISO image
       
 ** 'set_proxy.sh'
    - Sets proxy and mounts necessary file-systems
