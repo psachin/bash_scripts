@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Set virtual environment
+# Set virtual environment:: for python virtualenv
 
 # Configure:
-# Set the `VIRTUAL_DIR_PATH` variable value to valid PATH to your virtual envs
+# Set the `VIRTUAL_DIR_PATH` variable value to valid PATH
+# to your virtual environments directory,
 #
 # Usage:
-#
-# Added this file to your .bashrc or any local rc
+# Added this file to your .bashrc or any local rc script.
 # $ source /path/to/virtual.sh
 #
 # Now you can 'activate' the virtual environment by typing
@@ -15,15 +15,38 @@
 # For example:
 # $ setv rango
 #
+# or type:
+# setv [TAB] [TAB]
+
 # To list all your virtual environments:
 # $ setv -l
 #
-# To deactivate type:
+# To deactivate, type:
 # $ deactivate
-#
+
+# ChangeLog :
+# Fri Apr 25 12:41:40 IST 2014: TAB completion
 
 # Path to your virtual environment directories
 VIRTUAL_DIR_PATH="/home/sachin/virtualenvs/"
+
+function _setvcomplete_()
+{
+    # bash-completion
+    local cmd="${1##*/}" # to handle command(s) that's beain
+                         # executed. Not necessary here as 'setv' is
+                         # the only command
+    local word=${COMP_WORDS[COMP_CWORD]} # Words thats being completed
+    local xpat='${word}'		 # Filter pattern. Include
+					 # only words in variable '$names'
+    local names=$(ls ${VIRTUAL_DIR_PATH}) # Virtual environment names
+	
+    COMPREPLY=($(compgen -W "$names" -X "$xpat" -- "$word")) # 'compgen
+							     # generates
+							     # the
+							     # results'
+}
+
 
 function setv_help() {
     # Echo help
@@ -32,7 +55,10 @@ function setv_help() {
     echo -e "setv [virtual env name] \t to set virtual env."
 }
 
+
 function setv() {
+    # Main function
+    
     if [ $# -eq 0 ];
     then
 	setv_help
@@ -57,3 +83,10 @@ function setv() {
 	fi
     fi
 }
+
+
+complete  -F _setvcomplete_ setv # call bash-complete. The compgen
+				 # command accepts most of the same
+				 # options that complete does but it
+				 # generates results rather than just
+				 # storing the rules for future use.
