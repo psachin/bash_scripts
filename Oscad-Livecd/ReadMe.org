@@ -1,6 +1,7 @@
 * Oscad live CD/DVD script
+  (Tested on Ubuntu 12.04)
 ** Usage
-*** Set variables:
+*** Set variables in file =vars.sh= :
      - =UBUNTU_ISO= is source ISO path. For example this can be ubuntu-12.04.2-desktop-i386.iso
      - =TARGET_ISO= is the output filename. For example, ubuntu-OSCAD-rc5.iso
 
@@ -18,7 +19,7 @@
     - This will remove any previous directories and mounts the ISO
       image
     - Finally it will drop you into a 'chroot' environment
-    - Make changes to environment and exit the shell
+    - Now make changes to environment and exit the shell
 
 *** Run 'assemble.sh'
     #+BEGIN_SRC sh
@@ -28,7 +29,7 @@
     - This will create a squashfs of the 'chroot' environment and
       finally make an ISO image
       
-** 'set_proxy.sh'
+** 'set_proxy.sh' (Optional)
    - Sets proxy and mounts necessary file-systems
    
 ** Tweaks

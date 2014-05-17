@@ -1,4 +1,6 @@
 #!/bin/bash
+# Set variables in this file.
+
 
 LIVE_PATH="/home/hardik/oscad-live"
 
