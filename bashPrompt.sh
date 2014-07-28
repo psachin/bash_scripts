@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 # ref: https://gist.github.com/31631
 
+# Colors
+red='\e[0;31m'
+green='\e[0;32m'
+yellow='\e[1;33m'
+NC='\e[0m' # No color
+
 function parse_git_dirty {
     GIT_STATUS=$(git status 2> /dev/null | tail -n1)
     CLEAN_STATUS_MESSAGE="nothing to commit, working directory clean"
 
     if [[ ${GIT_STATUS} == ${CLEAN_STATUS_MESSAGE} ]];
     then
-	echo " ✓ "
+	echo -e "${yellow} ✓ ${green}"
     else
-	echo "*"
+	echo -e "${red} ☓ ${green}"
     fi
 }
 
