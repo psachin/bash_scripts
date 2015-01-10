@@ -5,7 +5,7 @@
 red='\e[0;31m'
 green='\e[0;32m'
 yellow='\e[1;33m'
-NC='\e[0m' # No color
+color_off='\e[0m'
 
 function parse_git_dirty {
     GIT_STATUS=$(git status 2> /dev/null | tail -n1)
@@ -13,9 +13,9 @@ function parse_git_dirty {
 
     if [[ ${GIT_STATUS} == ${CLEAN_STATUS_MESSAGE} ]];
     then
-	echo -e "${yellow} ✓ ${green}"
+	echo -e " :) "
     else
-	echo -e "${red} ☓ ${green}"
+	echo -e "$red :( $green"
     fi
 }
 
