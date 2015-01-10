@@ -9,9 +9,9 @@ color_off='\e[0m'
 
 function parse_git_dirty {
     GIT_STATUS=$(git status 2> /dev/null | tail -n1)
-    CLEAN_STATUS_MESSAGE="nothing to commit, working directory clean"
+    CLEAN_STATUS_MESSAGE="nothing"
 
-    if [[ ${GIT_STATUS} == ${CLEAN_STATUS_MESSAGE} ]];
+    if [[ ${GIT_STATUS} == *${CLEAN_STATUS_MESSAGE}* ]];
     then
 	echo -e " :) "
     else
