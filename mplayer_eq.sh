@@ -1,13 +1,23 @@
 #!/usr/bin/env bash
 # --------------------------------------------------
-# For changing equalizer preset in mplayer
-# Derived from :http://advantage-bash.blogspot.in/2013/05/mplayer-presets.html
+# To change equalizer preset in mplayer
+# Derived from: http://advantage-bash.blogspot.in/2013/05/mplayer-presets.html
+#
+# Usage:
+# bash ./mplayer_eq.sh
 # --------------------------------------------------
 
 EQ="af=equalizer"
 CONFIG_PATH=$HOME/.mplayer/config
 
 echo -e "1. Flat\n2. Classical\n3. Club\n4. Dance\n5. Full-bass\n6. Full-bass-and-treble\n7. Full-treble\n8. Headphones\n9. Large-hall\n10. Live\n11. Party\n12. Pop\n13. Reggae\n14. Rock\n15. Ska\n16. Soft\n17. Soft-rock\n18. Techno\n"
+
+# Display present configuration if any.
+if [ -f ${CONFIG_PATH} ];
+then
+    present_conf=$(grep "#" ${CONFIG_PATH} | awk '{print $NF}' | sed -e 's/#//g')
+    echo -e "Present configuration:" ${present_conf}
+fi
 
 read -p "your choice: "
 case $REPLY in
