@@ -2,8 +2,8 @@
 # Set virtual environment:: for python virtualenv
 
 # Configure:
-# Set the `VIRTUAL_DIR_PATH` variable value to valid PATH
-# to your virtual environments directory,
+# Set `VIRTUAL_DIR_PATH` value to PATH to your virtual environments
+# directory. By default it is set to '~/virtualenvs/'
 #
 # Usage:
 # Added this file to your .bashrc or any local rc script.
@@ -28,7 +28,7 @@
 # Fri Apr 25 12:41:40 IST 2014: TAB completion
 
 # Path to your virtual environment directories
-VIRTUAL_DIR_PATH="~/virtualenvs/"
+VIRTUAL_DIR_PATH="$HOME/virtualenvs/"
 
 function _setvcomplete_()
 {
