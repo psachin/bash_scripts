@@ -24,6 +24,10 @@
 # To deactivate, type:
 # $ deactivate
 
+# TODO:
+# - Create virtualenv with command something like: setv new_virt (if does not exists)
+# - Delete virtualenv with command something like: setv -d old_virt_name
+
 # ChangeLog :
 # Fri Apr 25 12:41:40 IST 2014: TAB completion
 
