@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Flash b2g image on Geekphone(keon)
+
 
 ./adb reboot bootloader
 ./fastboot flash boot boot.img

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 # htm2sphinx.sh
 
 
@@ -9,7 +9,7 @@ function convert() {
     # ----
     FILE=$(find -type f -iname "*.htm")
     # echo $FILE
-    
+
     for f in ${FILE[@]}
     do
         # echo $f
@@ -21,13 +21,13 @@ function convert() {
 
 
 function reSt() {
-    # ----  
+    # ----
     # find .rst files(recursively) and edit it to the format
     # required by sphinx
     # ----
     DIR=$(find -maxdepth 1 -type d -iname "*" -not -iname ".")
     # echo $DIR
-	
+
     for d in ${DIR[@]}
     do
 	echo -e "$d"
@@ -36,15 +36,15 @@ function reSt() {
 	echo "====" > ${DIR_NAME}.rst
 	echo "$DIR_NAME" >> ${DIR_NAME}.rst
 	echo "====" >> ${DIR_NAME}.rst
-	
+
 	cat content >> ${DIR_NAME}.rst
-	
+
 	find -type f -iname "*.rst" | \
     	    sed 's$^./$$g' | \
     	    sed 's/.rst//g' | \
     	    sed 's/^/   /g' | \
     	    grep "${DIR_NAME}" >> ${DIR_NAME}.rst
-	
+
 	cd $d
 	RST_FILE=$(find -type f -iname "*.rst")
 	for f in ${RST_FILE[@]}
@@ -54,10 +54,9 @@ function reSt() {
 	    sed -i '1i ====\n"'${HEADING}'"\n====\n' $f
 	done
 	cd ..
-	
     done
 }
 
-# _init__
+# __init__
 convert
 reSt
