@@ -115,14 +115,14 @@ function setv() {
     then
 	_setv_help_
     else
-	case ${1} in
-	    -n) _setv_create ${2}
+	case "${1}" in
+	    '-n') _setv_create ${2}
 		;;
 
-	    -d) _setv_delete ${2}
+	    '-d') _setv_delete ${2}
 		;;
 
-	    -l) _setv_list
+	    '-l') _setv_list
 		;;
 
 	    *) if [ -d ${VIRTUAL_DIR_PATH}${1} ];
