@@ -2,7 +2,9 @@
 
 # TODO: This can be removed if relative paths are used.
 HOME=/home/sachin
-CONFIG_FILE=$HOME/kernel/configs/slackware-lenovo-laptop-config-3.19.0
+
+DEFAULT_CONFIG_FILE=$HOME/kernel/configs/slackware-lenovo-laptop-config-3.19.0
+ROOTFS_DEV="sda2"
 
 # TODO: When CONFIG_LOCALVERSION_AUTO=y, the kernel module dir:
 # /lib/modules/KERNEL_VERSION-(EXTRA_STRING) has some extra string.
@@ -39,12 +41,12 @@ fi
 echo "Cleaning kernel source.."
 pushd $KERNEL_SRC
 make distclean; make mrproper; make clean
-echo "Copy reference config file $CONFIG_FILE to start with.."
-if [ -f $CONFIG_FILE ];
+echo "Copy reference config file $DEFAULT_CONFIG_FILE to start with.."
+if [ -f $DEFAULT_CONFIG_FILE ];
 then
-    cp -v $CONFIG_FILE .config
+    cp -v $DEFAULT_CONFIG_FILE .config
 else
-    echo "ERR: Config file $CONFIG_FILE does not exist!"
+    echo "ERR: Config file $DEFAULT_CONFIG_FILE does not exist!"
 fi
 
 # want to configure?
@@ -63,7 +65,6 @@ esac
 echo "Cleaning build directory.."
 pushd $BUILD_PATH
 rm -rf *; rm -rf .*
-echo $DATE_TIME
 
 popd
 # TODO: Backup this configuration file? to configs/
@@ -79,7 +80,7 @@ pushd $KERNEL_SRC
 make modules_install O=$BUILD_PATH
 
 echo "Creating initrd.."
-mkinitrd -c -k $KERNEL_VERSION -f ext4 -r /dev/sda2 -m ext4 -u -o /boot/initrd-$KERNEL_VERSION.gz
+mkinitrd -c -k $KERNEL_VERSION -f ext4 -r /dev/${ROOTFS_DEV} -m ext4 -u -o /boot/initrd-$KERNEL_VERSION.gz
 echo "Installing kernel.."
 make install O=$BUILD_PATH
 echo "Renaming kernel binary by version"
