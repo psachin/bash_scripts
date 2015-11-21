@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Script to compile the kernel
 # Usage: bash build_my_kernel.sh
-# .. and follow the instructions
+# and follow the instructions
 
 # ---- You need to configure these variables ----
 # Default location of the (working)config file.
-DEFAULT_CONFIG_FILE=$(pwd)/config-backlight-drm
+DEFAULT_CONFIG_FILE=$(pwd)/config-bleeding-edge
+# Partition where root filesystem resides.
 ROOTFS_DEV="sda2"
 # -----------------------------------------------
 
@@ -13,6 +14,8 @@ ROOTFS_DEV="sda2"
 # /lib/modules/KERNEL_VERSION-(EXTRA_STRING) has extra string.
 # mkinitrd requires this KERNEL_VERSION-(EXTRA_STRING) to create
 # initrd compressed file.
+# DONE: Defined KERNEL_RELEASE
+# Note: `make kernelrelease` requires .config
 KERNEL_VERSION=$(make kernelversion)
 DATE_TIME=$(date +"%d-%b-%Y_%T")
 
@@ -45,11 +48,13 @@ if [ -f .config ];
 then
     mv .config config-current
     CONFIG_TRUE=1
+else
+    CONFIG_TRUE=0
 fi
 
 make distclean; make mrproper; make clean
 echo "Copy reference config file $DEFAULT_CONFIG_FILE to start with.."
-if [-f $DEFAULT_CONFIG_FILE ];
+if [ -f $DEFAULT_CONFIG_FILE ];
 then
     # TODO: While
     read -p "Do you want to copy default config file? (y/n)" ANS
@@ -70,7 +75,7 @@ then
     then
 	mv config-current .config
     else
-	echo "Assuming you do not have config file, please run 'make localmodconfig'"
+	echo "You do not have config file, please run 'make localmodconfig'"
 	echo "and start this script again"
 	exit 1
     fi
@@ -110,23 +115,26 @@ pushd $KERNEL_SRC
 echo "Installing kernel modules.."
 make modules_install O=$BUILD_PATH
 
+KERNEL_RELEASE=$(cat $BUILD_PATH/include/config/kernel.release 2> /dev/null)
+
 echo "Creating initrd.."
-mkinitrd -c -k $KERNEL_VERSION -f ext4 -r /dev/${ROOTFS_DEV} -m ext4 -u -o /boot/initrd-$KERNEL_VERSION.gz
+mkinitrd -c -k $KERNEL_RELEASE -f ext4 -r /dev/${ROOTFS_DEV} -m ext4 -u -o /boot/initrd-$KERNEL_RELEASE.gz
 echo "Installing kernel.."
 make install O=$BUILD_PATH
 
 if [ -f /boot/vmlinuz ];
 then
-    echo "Renaming kernel binary by version"
-    mv /boot/vmlinuz /boot/vmlinuz-$KERNEL_VERSION
+    echo "Renaming kernel binary by release version"
+    mv /boot/vmlinuz /boot/vmlinuz-$KERNEL_RELEASE
 else
     echo "ERR: /boot/vmlinuz, not found, kernel installation must have failed!"
 fi
 
 # Check the existance
-if [ -f /boot/vmlinuz-$KERNEL_VERSION ];
+if [ -f /boot/vmlinuz-$KERNEL_RELEASE ];
 then
     echo "Kernel installed sucessfully"
+    echo "Check entry in /etc/lilo.conf and run 'lilo'"
 else
     echo "ERR: Something went wrong!"
     echo "ERR: I don't find vmlinuz with kernel version you have compiled"
