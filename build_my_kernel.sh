@@ -125,7 +125,7 @@ make install O=$BUILD_PATH
 if [ -f /boot/vmlinuz ];
 then
     echo "Renaming kernel binary by release version"
-    mv /boot/vmlinuz /boot/vmlinuz-$KERNEL_RELEASE
+    mv -v /boot/vmlinuz /boot/vmlinuz-$KERNEL_RELEASE
 else
     echo "ERR: /boot/vmlinuz, not found, kernel installation must have failed!"
 fi
