@@ -10,6 +10,8 @@
 EQ="af=equalizer"
 CONFIG_PATH=$HOME/.mplayer/config
 
+function mplayer-eq()
+{
 echo -e "1. Flat\n2. Classical\n3. Club\n4. Dance\n5. Full-bass\n6. Full-bass-and-treble\n7. Full-treble\n8. Headphones\n9. Large-hall\n10. Live\n11. Party\n12. Pop\n13. Reggae\n14. Rock\n15. Ska\n16. Soft\n17. Soft-rock\n18. Techno\n"
 
 # Display present configuration if any.
@@ -58,3 +60,4 @@ case $REPLY in
      18)echo "${EQ}=4.8:3.3:0.0:-3.4:-2.9:0.0:4.8:5.7:5.8:5.3  #techno" > ${CONFIG_PATH}
       ;;
 esac
+}
