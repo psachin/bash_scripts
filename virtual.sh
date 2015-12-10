@@ -44,6 +44,7 @@
 
 # Path to virtual environment directory
 VIRTUAL_DIR_PATH="$HOME/virtualenvs/"
+LIST_OF_VIRTUALENVS=$(ls -l "${VIRTUAL_DIR_PATH}" | egrep '^d' | awk -F " " '{print $NF}')
 
 function _setvcomplete_()
 {
@@ -54,7 +55,7 @@ function _setvcomplete_()
     local word=${COMP_WORDS[COMP_CWORD]} # Words thats being completed
     local xpat='${word}'		 # Filter pattern. Include
 					 # only words in variable '$names'
-    local names=$(ls ${VIRTUAL_DIR_PATH}) # Virtual environment names
+    local names=${LIST_OF_VIRTUALENVS} # Virtual environment names
 
     COMPREPLY=($(compgen -W "$names" -X "$xpat" -- "$word")) # 'compgen
 							     # generates
@@ -67,8 +68,8 @@ function _setv_help_() {
     echo "Help: "
     echo -e "setv [-l] \t\t\t to list all virtual envs."
     echo -e "setv [Virtual_env_name] \t to set virtual env."
-    echo -e "setv -n [New virtual_env_name] \t to create virtual env."
-    echo -e "setv -d [virtual_env_name] \t to delete existing virtual env."
+    echo -e "setv -n [New virtual_env_name] \t to create virtual env(NEW)."
+    echo -e "setv -d [virtual_env_name] \t to delete existing virtual env(NEW)."
 }
 
 function _setv_create()
@@ -102,7 +103,6 @@ function _setv_delete()
 
 function _setv_list() {
     echo -e "List of virtual environments you have under ${VIRTUAL_DIR_PATH}:\n"
-    LIST_OF_VIRTUALENVS=$(ls -1 ${VIRTUAL_DIR_PATH})
     for virt in ${LIST_OF_VIRTUALENVS}
     do
 	echo ${virt}
