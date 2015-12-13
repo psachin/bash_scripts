@@ -25,10 +25,10 @@
 # To list all your virtual environments:
 # $ setv -l
 #
-# To create new virtual environments:
+# To create new virtual environment:
 # $ setv -n new_virtualenv_name
 #
-# To delete new virtual environments:
+# To delete existing virtual environment:
 # $ setv -d existing_virtualenv_name
 #
 # To deactivate, type:
