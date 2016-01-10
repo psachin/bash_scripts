@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Set virtual environment:: for python virtualenv
+# Set virtual environment:: for python virtual environment.
 # Author: Sachin <iclcoolster@gmail.com>
 # Source: https://github.com/psachin/bash_scripts/virtual.sh
 #
-# License: GNU/GPL v3
+# License: GNU GPL v3
 #
 # Configure:
-# Set `VIRTUAL_DIR_PATH` value to PATH to your virtual environments
-# directory. By default it is set to '~/virtualenvs/'
+# Set `VIRTUAL_DIR_PATH` value to your virtual environments
+# directory-path. By default it is set to '~/virtualenvs/'
 #
 # Usage:
-# Added this file to your .bashrc or any local rc script.
+# Added this line to your .bashrc or any local rc script.
 # $ source /path/to/virtual.sh
 #
 # Now you can 'activate' the virtual environment by typing
