@@ -21,7 +21,6 @@ function gituser() {
 	    email="${default_email}"
     esac
     git config --global user.email "${email}"
-    echo "user.email is now ${email}"
 }
 
 gituser
